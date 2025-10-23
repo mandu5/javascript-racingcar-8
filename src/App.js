@@ -52,6 +52,10 @@ class App {
    * @returns {string[]} 자동차 이름 배열
    */
   parseCarNames(input) {
+    if (!input || typeof input !== 'string') {
+      throw new Error('[ERROR] 자동차 이름을 입력해주세요.');
+    }
+
     const carNames = input.split(',').map((name) => name.trim());
 
     this.validateCarNames(carNames);
@@ -75,7 +79,12 @@ class App {
    * @returns {number} 시도 횟수
    */
   parseAttemptCount(input) {
-    const attemptCount = parseInt(input.trim(), 10);
+    if (!input || typeof input !== 'string') {
+      throw new Error(ERROR_MESSAGES.INVALID_ATTEMPT_COUNT);
+    }
+
+    const trimmedInput = input.trim();
+    const attemptCount = parseInt(trimmedInput, 10);
 
     if (Number.isNaN(attemptCount)) {
       throw new Error(ERROR_MESSAGES.INVALID_ATTEMPT_COUNT);

@@ -120,4 +120,57 @@ describe("자동차 경주", () => {
     // then
     await expect(app.run()).rejects.toThrow("[ERROR]");
   });
+
+  test("자동차 이름 공백만 있는 경우", async () => {
+    // given
+    const inputs = ["pobi, ,jun"];
+    mockQuestions(inputs);
+
+    // when
+    const app = new App();
+
+    // then
+    await expect(app.run()).rejects.toThrow("[ERROR]");
+  });
+
+  test("자동차 이름이 정확히 5자인 경우", async () => {
+    // given
+    const MOVING_FORWARD = 4;
+    const STOP = 3;
+    const inputs = ["abcde,fghij", "1"];
+    const logs = ["abcde : -", "fghij : ", "최종 우승자 : abcde"];
+    const logSpy = getLogSpy();
+
+    mockQuestions(inputs);
+    mockRandoms([MOVING_FORWARD, STOP]);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    logs.forEach((log) => {
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(log));
+    });
+  });
+
+  test("시도 횟수가 매우 큰 경우", async () => {
+    // given
+    const MOVING_FORWARD = 4;
+    const STOP = 3;
+    const inputs = ["pobi,woni", "1000"];
+    const logSpy = getLogSpy();
+
+    mockQuestions(inputs);
+    // 1000번의 랜덤값 생성 (대부분 STOP으로 설정)
+    const randomValues = Array(2000).fill(STOP);
+    mockRandoms(randomValues);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("최종 우승자"));
+  });
 });

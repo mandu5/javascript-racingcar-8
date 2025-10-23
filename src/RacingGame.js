@@ -61,7 +61,17 @@ class RacingGame {
    * @returns {Car[]} 우승자 자동차 배열
    */
   getWinners() {
-    const maxPosition = Math.max(...this.cars.map((car) => car.position));
+    if (this.cars.length === 0) {
+      return [];
+    }
+
+    let maxPosition = this.cars[0].position;
+    for (let i = 1; i < this.cars.length; i++) {
+      if (this.cars[i].position > maxPosition) {
+        maxPosition = this.cars[i].position;
+      }
+    }
+
     return this.cars.filter((car) => car.position === maxPosition);
   }
 

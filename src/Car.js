@@ -17,10 +17,12 @@ class Car {
    * @throws {Error} 잘못된 자동차 이름일 경우
    */
   static validateName(name) {
-    if (name === '') {
+    const trimmedName = name.trim();
+
+    if (trimmedName === '') {
       throw new Error('[ERROR] 자동차 이름은 비어있을 수 없습니다.');
     }
-    if (name.length > 5) {
+    if (trimmedName.length > 5) {
       throw new Error('[ERROR] 자동차 이름은 5자 이하여야 합니다.');
     }
   }
